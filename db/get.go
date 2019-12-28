@@ -1,21 +1,22 @@
 package db
 
-// func GetAllStudent() (*[]Student, error) {
-// 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-// 	filter := bson.M{} //map[string]interface{}
-// 	cur, err := Client.Database(DbName).Collection(ColName).Find(ctx, filter)
-// 	if err != nil {
-// 		log.Printf("Find error: %v", err)
-// 		return nil, err
-// 	}
+import (
+	"context"
+	"fmt"
+	"time"
 
-// 	ctx, _ = context.WithTimeout(context.Background(), 5*time.Second)
-// 	var students []Student
-// 	err = cur.All(ctx, &students)
-// 	if err != nil {
-// 		log.Printf("cur all error: %v", err)
-// 		return nil, err
-// 	}
+	"github.com/letanthang/nc_user/model"
+	"github.com/letanthang/nc_user/utils"
+	"go.mongodb.org/mongo-driver/bson"
+)
 
-// 	return &students, nil
-// }
+func LoginUser(req model.LoginReq) (*model.LoginResp, error) {
+	var user model.User
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	filter := bson.M{"email": req.Email, "password": utils.MD5(req.Password)} //map[string]interface{}
+	err := Client.Database(DbName).Collection(ColName).FindOne(ctx, filter).Decode(&user)
+	token := utils.GenerateToken(user.ID, user.Phone, user.Email)
+	resp := model.LoginResp{&user, token}
+	fmt.Println(err, resp)
+	return &resp, err
+}

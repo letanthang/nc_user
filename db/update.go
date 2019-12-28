@@ -4,11 +4,12 @@ import (
 	"context"
 	"time"
 
+	"github.com/letanthang/nc_user/model"
 	"github.com/letanthang/nc_user/utils"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func AddUser(user *User) (interface{}, error) {
+func AddUser(user *model.User) (interface{}, error) {
 	user.Password = utils.MD5(user.Password)
 	collection := Client.Database(DbName).Collection(ColName)
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
@@ -16,7 +17,7 @@ func AddUser(user *User) (interface{}, error) {
 	return res, err
 }
 
-func UpdateUser(user *UserUpdateReq) (interface{}, error) {
+func UpdateUser(user *model.UserUpdateReq) (interface{}, error) {
 	collection := Client.Database(DbName).Collection(ColName)
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	filter := bson.M{"id": user.ID}

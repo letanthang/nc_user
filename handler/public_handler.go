@@ -5,6 +5,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/letanthang/nc_user/db"
+	"github.com/letanthang/nc_user/model"
 )
 
 func HealthCheck(c echo.Context) error {
@@ -29,26 +30,26 @@ func TestDB(c echo.Context) error {
 // }
 
 func RegisterUser(c echo.Context) error {
-	var user db.User
+	var user model.User
 	if err := c.Bind(&user); err != nil {
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, model.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 	res, err := db.AddUser(&user)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, model.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
 	return c.JSON(http.StatusOK, res)
 }
 
-func UpdateUser(c echo.Context) error {
-	var req db.UserUpdateReq
+func LoginUser(c echo.Context) error {
+	var req model.LoginReq
 	if err := c.Bind(&req); err != nil {
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, model.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
-	res, err := db.UpdateUser(&req)
+	res, err := db.LoginUser(req)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, db.Error{Code: http.StatusBadRequest, Msg: "bad request"})
+		return c.JSON(http.StatusBadRequest, model.Error{Code: http.StatusBadRequest, Msg: "bad request"})
 	}
 
 	return c.JSON(http.StatusOK, res)

@@ -7,8 +7,8 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/letanthang/nc_user/config"
-	"github.com/letanthang/nc_user/route"
 	mw "github.com/letanthang/nc_user/middleware"
+	"github.com/letanthang/nc_user/route"
 )
 
 func main() {

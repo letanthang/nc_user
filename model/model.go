@@ -1,4 +1,4 @@
-package db
+package model
 
 import (
 	"github.com/dgrijalva/jwt-go"
@@ -30,4 +30,13 @@ type UserUpdateReq struct {
 	FirstName string `json:"first_name"`
 	LastName  string `json:"last_name"`
 	Password  string `json:"password"`
+}
+
+type LoginReq struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+type LoginResp struct {
+	*User
+	Token string `json:"token"`
 }
