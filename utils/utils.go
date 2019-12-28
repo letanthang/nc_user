@@ -6,6 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/letanthang/nc_user/config"
 	"github.com/letanthang/nc_user/model"
+	"time"
 )
 
 func MD5(text string) string {
@@ -21,7 +22,7 @@ func GenerateToken(userID int, phone, email string) string {
 		Phone:  phone,
 		Email:  email,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: 360000,
+			ExpiresAt: time.Now().Add(48 * time.Hour).Unix(), //unix timestamp
 		},
 	}
 

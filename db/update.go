@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/letanthang/nc_user/model"
@@ -17,7 +18,21 @@ func AddUser(user *model.User) (interface{}, error) {
 	return res, err
 }
 
-func UpdateUser(user *model.UserUpdateReq) (interface{}, error) {
+func UpdateUser(req *model.UserUpdateReq) (interface{}, error) {
+	user, _ := FindUserByID(req.ID)
+
+	if req.FirstName != "" {
+		user.FirstName = req.FirstName
+	}
+	if req.LastName != "" {
+		user.LastName = req.LastName
+	}
+	if req.Password != "" {
+		user.Password = utils.MD5(req.Password)
+	}
+
+	fmt.Printf("user :%+v", user)
+
 	collection := Client.Database(DbName).Collection(ColName)
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	filter := bson.M{"id": user.ID}

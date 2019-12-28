@@ -20,3 +20,12 @@ func LoginUser(req model.LoginReq) (*model.LoginResp, error) {
 	fmt.Println(err, resp)
 	return &resp, err
 }
+
+func FindUserByID(ID int) (*model.User, error) {
+	var user model.User
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	filter := bson.M{"id": ID} //map[string]interface{}
+	err := Client.Database(DbName).Collection(ColName).FindOne(ctx, filter).Decode(&user)
+
+	return &user, err
+}
