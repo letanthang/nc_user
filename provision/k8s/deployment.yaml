@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: thangle-student
+  name: thangle-user
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: thangle
+      app: user
   template:
     metadata:
       labels:
-        app: thangle
+        app: user
     spec:
       containers:
         - name: cont
-          image: letanthang/nc_student
+          image: letanthang/nc_user
           ports:
             - containerPort: 9090
               name: web
